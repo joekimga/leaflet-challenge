@@ -1,6 +1,6 @@
-var quakeUrl = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_hour.geojson";
+var quakeUrl = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson";
 
-console.log("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_hour.geojson")
+// console.log("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_hour.geojson")
 
 var grayscalemap = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
     attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
@@ -9,28 +9,26 @@ var grayscalemap = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/til
     accessToken: API_KEY
     });
 
-
-
 // Create our map w/ streetmap and earthquakes layers 
 var myMap = L.map("mapid", {
   center: [
     37.09, -95.71
   ],
-  zoom: 4
+  zoom:2
 });
 
 grayscalemap.addTo(myMap);
 
-d3.json(quakeUrl, function(data) {
+d3.json(quakeUrl).then(function(data) {
 
     //createFeatures(data.features);
-    console.log(data);
+    console.log("data:", data);
     function styles(feature) {
       return {
         opacity: 1,
         color: "#FF0000",
-        fillColor: circleColor(features.geometry.coordinates[2]),
-        radius: radiusSize(features.properties.mag),
+        fillColor: circleColor(feature.geometry.coordinates[2]),
+        radius: radiusSize(feature.properties.mag),
         fillOpacity: 1,
         weight: 0.5,
         stroke: true
@@ -65,11 +63,11 @@ d3.json(quakeUrl, function(data) {
         return L.circleMarker(latlng);
       },
       style: styles,
-      onEachFeature: function(feature, latlng) {
+      onEachFeature: function(feature, layer) {
         layer.bindPopup("<h3>" + "Place: " +  feature.properties.place +
         "</h3><hr><p>" + "<br>Time: " + new Date(feature.properties.time) + 
-        "<br>Depth :" + features.geometry.coordinates[2] + 
-        "<br>Magnitude: " + features.properties.mag + "</p>");
+        "<br>Depth :" + feature.geometry.coordinates[2] + 
+        "<br>Magnitude: " + feature.properties.mag + "</p>");
       }
     }).addTo(myMap);
     var legend = L.control({position: 'bottomright'});
@@ -92,38 +90,40 @@ d3.json(quakeUrl, function(data) {
 });
 
 
+
+
 //function createFeatures(earthquakeData) {
 
-//     function onEachFeature(feature, layer) {
-//       layer.bindPopup("<h3>" + feature.properties.place +
-//         "</h3><hr><p>" + new Date(feature.properties.time) + "</p>");
-//     }
+    function onEachFeature(feature, layer) {
+      layer.bindPopup("<h3>" + feature.properties.place +
+        "</h3><hr><p>" + new Date(feature.properties.time) + "</p>");
+    }
 
-//     function radiusSize(magnitude) {
-//         return magnitude * 20000;
-//       }  
+    function radiusSize(magnitude) {
+        return magnitude * 15;
+      }  
 
         
-//   function circleColor(depth) {
-//     if (depth > 90) {
-//       return "tomato"
-//     }
-//     else if (depth > 70) {
-//       return "lightsalmon"
-//     }
-//     else if (depth >50) {
-//       return "orange"
-//     }
-//     else if (depth >30) {
-//       return "gold"
-//     }
-//     else if (depth >10) {
-//       return "yellowgreen"
-//     }
-//     else {
-//       return "lightgreen"
-//     }
-//   }
+  function circleColor(depth) {
+    if (depth > 90) {
+      return "tomato"
+    }
+    else if (depth > 70) {
+      return "lightsalmon"
+    }
+    else if (depth >50) {
+      return "orange"
+    }
+    else if (depth >30) {
+      return "gold"
+    }
+    else if (depth >10) {
+      return "yellowgreen"
+    }
+    else {
+      return "lightgreen"
+    }
+  }
 
 //   var earthquakes = L.geoJSON(earthquakeData, {
 //     pointToLayer: function(earthquakeData, latlng) {
