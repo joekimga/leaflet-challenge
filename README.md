@@ -10,7 +10,7 @@ The USGS is interested in building a new set of tools that will allow them visua
 
 ### Level 1: Basic Visualization
 
-![2-BasicMap](static/images/2-BasicMap.png)
+![2-BasicMap](2-BasicMap.png)
 
 Earthquake data set was visualized.
 
