@@ -17,7 +17,7 @@ Earthquake data set was visualized.
 
    The USGS provides earthquake data in a number of different formats, updated every 5 minutes. The [USGS GeoJSON Feed](http://earthquake.usgs.gov/earthquakes/feed/v1.0/geojson.php) page was visited and a data set was visualize. When you click on a data setyou will be given a JSON representation of that data. You will be using the URL of this JSON to pull in the data for our visualization.
 
-   ![4-JSON](Leaflet-Step-1/static/images/4-JSON.png)
+<!--    ![4-JSON](Leaflet-Step-1/static/images/4-JSON.png) -->
 
 2. **Import & Visualize the Data**
 
